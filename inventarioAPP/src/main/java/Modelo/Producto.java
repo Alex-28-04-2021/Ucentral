@@ -12,63 +12,70 @@ import org.springframework.data.relational.core.mapping.Table;
  *
  * @author edwin
  */
-@Table("producto")
+@Table("productos")
         
 public class Producto {
     @Id
-    @Column("idproductos")
-    private int idproductos;
-    @Column("nombreproductos")    
-    private String nombreproductos;
-    @Column("cantidadproductos")
-    private int cantidadproductos;
-    @Column("precioproductos")
-    private float precioproductos;
+    
+    @Column("codigo")
+    private int codigo;
+    @Column("nombre")    
+    private String nombre;
+    @Column("inventario")
+    private int inventario;
+    @Column("precio")
+    private double precio;
 
     public Producto() {
     }
-    
 
-    public Producto(int idproductos, String nombreproductos, int cantidadproductos, float precioproductos) {
-        this.idproductos = idproductos;
-        this.nombreproductos = nombreproductos;
-        this.cantidadproductos = cantidadproductos;
-        this.precioproductos = precioproductos;
-    }
-
-    public int getIdproductos() {
-        return idproductos;
-    }
-
-    public void setIdproductos(int idproductos) {
-        this.idproductos = idproductos;
-    }
-
-    public String getNombreproductos() {
-        return nombreproductos;
-    }
-
-    public void setNombreproductos(String nombreproductos) {
-        this.nombreproductos = nombreproductos;
-    }
-
-    public int getCantidadproductos() {
-        return cantidadproductos;
-    }
-
-    public void setCantidadproductos(int cantidadproductos) {
-        this.cantidadproductos = cantidadproductos;
-    }
-
-    public float getPrecioproductos() {
-        return precioproductos;
-    }
-
-    public void setPrecioproductos(float precioproductos) {
-        this.precioproductos = precioproductos;
+    public Producto(String nombre, int inventario, double precio) {
+        this.nombre = nombre;
+        this.inventario = inventario;
+        this.precio = precio;
     }
     
-    
+
+    public Producto(int codigo, String nombre, int inventario, double precio) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.inventario = inventario;
+        this.precio = precio;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getInventario() {
+        return inventario;
+    }
+
+    public void setInventario(int inventario) {
+        this.inventario = inventario;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+
     
     
 }

@@ -1,6 +1,6 @@
 package com.inventariosupermercado.demo;
 
-import Repositorio.RepositorioProducto;
+import Modelo.RepositorioProducto;
 import controlador.ControladorProducto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
@@ -14,8 +14,8 @@ import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import vista.Principal;
 
 @SpringBootApplication
-@ComponentScan("modelo")
-@EnableJdbcRepositories("Repositorio")
+@ComponentScan("Modelo")
+@EnableJdbcRepositories("Modelo")
 public class InventarioSupermercadoApplication {
     
     @Autowired

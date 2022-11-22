@@ -4,6 +4,7 @@
  */
 package Modelo;
 
+import Modelo.Producto;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

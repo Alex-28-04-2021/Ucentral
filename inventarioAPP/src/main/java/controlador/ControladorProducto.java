@@ -5,7 +5,7 @@
 package controlador;
 
 import Modelo.Producto;
-import Repositorio.RepositorioProducto;
+import Modelo.RepositorioProducto;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,11 +28,10 @@ public class ControladorProducto implements ActionListener {
     Principal vista;
     DefaultTableModel defaultTableModel;
 
-    private int idproductos;
-    private String nombreproductos;
-    private int cantidadproductos;
-    private float precioproductos;
-
+    private int codigo;
+    private String nombre;
+    private int inventario;
+    private double precio;
     public ControladorProducto() {
         super();
     }
@@ -63,8 +62,8 @@ public class ControladorProducto implements ActionListener {
         defaultTableModel = new DefaultTableModel(titulos, 0);
         List<Producto> listaProductos = (List<Producto>) repoProducto.findAll();
         for (Producto producto : listaProductos) {
-            defaultTableModel.addRow(new Object[]{producto.getIdproductos(), producto.getNombreproductos(), producto.getCantidadproductos(),
-                producto.getPrecioproductos()});
+            defaultTableModel.addRow(new Object[]{producto.getCodigo(), producto.getNombre(), producto.getInventario(),
+                producto.getPrecio()});
         }
         vista.getTblTablaProductos().setModel(defaultTableModel);
         vista.getTblTablaProductos().setPreferredSize(new Dimension(350, defaultTableModel.getRowCount() * 16));
@@ -72,16 +71,15 @@ public class ControladorProducto implements ActionListener {
 
     public void llenarsql(MouseEvent e) {
         JTable target = (JTable) e.getSource();
-        vista.getTxtIdProducto().setText(vista.getTblTablaProductos().getModel().getValueAt(target.getSelectedRow(), 0).toString());
-        vista.getTxtNombreProducto().setText(vista.getTblTablaProductos().getModel().getValueAt(target.getSelectedRow(), 1).toString());
-        vista.getTxtCantidadProducto().setText(vista.getTblTablaProductos().getModel().getValueAt(target.getSelectedRow(), 2).toString());
-        vista.getTxtPrecioProducto().setText(vista.getTblTablaProductos().getModel().getValueAt(target.getSelectedRow(), 3).toString());
+        vista.getTxtCodigo().setText(vista.getTblTablaProductos().getModel().getValueAt(target.getSelectedRow(), 0).toString());
+        vista.getTxtNombre().setText(vista.getTblTablaProductos().getModel().getValueAt(target.getSelectedRow(), 1).toString());
+        vista.getTxtInventario().setText(vista.getTblTablaProductos().getModel().getValueAt(target.getSelectedRow(), 2).toString());
+        vista.getTxtPrecio().setText(vista.getTblTablaProductos().getModel().getValueAt(target.getSelectedRow(), 3).toString());
 
     }
 
     private boolean validarDatos() {
-        if ("".equals(vista.getTxtIdProducto().getText()) || "".equals(vista.getTxtNombreProducto().getText())
-                || "".equals(vista.getTxtCantidadProducto().getText()) || "".equals(vista.getTxtPrecioProducto().getText())) {
+        if ("".equals(vista.getTxtCodigo().getText()) || "".equals(vista.getTxtNombre().getText())|| "".equals(vista.getTxtInventario().getText()) || "".equals(vista.getTxtPrecio().getText())) {
             JOptionPane.showMessageDialog(null, "Algun Campo esta vacio", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         } else {
@@ -91,10 +89,10 @@ public class ControladorProducto implements ActionListener {
 
     private boolean CargarDatos() {
         try {
-            idproductos = Integer.parseInt(vista.getTxtIdProducto().getText());
-            nombreproductos = vista.getTxtNombreProducto().getText();
-            cantidadproductos = Integer.parseInt(vista.getTxtCantidadProducto().getText());
-            precioproductos = Float.parseFloat(vista.getTxtPrecioProducto().getText());
+            codigo = Integer.parseInt("".equals(vista.getTxtCodigo().getText())? "0" : vista.getTxtCodigo().getText());
+            nombre = vista.getTxtNombre().getText();
+            inventario = Integer.parseInt(vista.getTxtInventario().getText());
+            precio = Double.parseDouble(vista.getTxtPrecio().getText());
             return true;
         } catch (Exception e) {
             return false;
@@ -102,16 +100,16 @@ public class ControladorProducto implements ActionListener {
     }
 
     private void limpiarCampos() {
-        vista.getTxtIdProducto().setText("");
-        vista.getTxtNombreProducto().setText("");
-        vista.getTxtCantidadProducto().setText("");
-        vista.getTxtPrecioProducto().setText("");
+        vista.getTxtCodigo().setText("");
+        vista.getTxtNombre().setText("");
+        vista.getTxtInventario().setText("");
+        vista.getTxtPrecio().setText("");
     }
 
     private void AgregarProducto() {
         try {
             if (CargarDatos()) {
-                Producto producto = new Producto(idproductos, nombreproductos, cantidadproductos, precioproductos);
+                Producto producto = new Producto(nombre, inventario, precio);
                 repoProducto.save(producto);
                 JOptionPane.showMessageDialog(null, "Producto se Agrego");
                 limpiarCampos();
@@ -128,7 +126,7 @@ public class ControladorProducto implements ActionListener {
     private void ActualizarProducto() {
         try {
             if (CargarDatos()) {
-                Producto producto = new Producto(idproductos, nombreproductos, cantidadproductos, precioproductos);
+                Producto producto = new Producto(codigo, nombre, inventario, precio);
                 repoProducto.save(producto);
                 JOptionPane.showMessageDialog(null, "Producto se Actualizado");
                 limpiarCampos();
@@ -145,7 +143,7 @@ public class ControladorProducto implements ActionListener {
     private void EliminarProducto() {
         try {
             if (CargarDatos()) {
-                Producto producto = new Producto(idproductos, nombreproductos, cantidadproductos, precioproductos);
+                Producto producto = new Producto(codigo, nombre, inventario, precio);
                 repoProducto.delete(producto);
                 JOptionPane.showMessageDialog(null, "Producto se Elimino");
                 limpiarCampos();
@@ -168,12 +166,12 @@ public class ControladorProducto implements ActionListener {
 
     private String precioMayor() {
         String nombre = "";
-        float precioAux = 0;
+        double precioAux = 0;
         List<Producto> listaProductos = (List<Producto>) repoProducto.findAll();
         for (Producto producto : listaProductos) {
-            if (producto.getPrecioproductos() > precioAux) {
-                nombre = producto.getNombreproductos();
-                precioAux = producto.getPrecioproductos();
+            if (producto.getPrecio() > precioAux) {
+                nombre = producto.getNombre();
+                precioAux = producto.getPrecio();
             }
         }
         return nombre;
@@ -181,12 +179,12 @@ public class ControladorProducto implements ActionListener {
 
     private String precioMenor() {
         String nombre = "";
-        float precioAux = 1000000;
+        double precioAux = 1000000;
         List<Producto> listaProductos = (List<Producto>) repoProducto.findAll();
         for (Producto producto : listaProductos) {
-            if (producto.getPrecioproductos() < precioAux) {
-                nombre = producto.getNombreproductos();
-                precioAux = producto.getPrecioproductos();
+            if (producto.getPrecio() < precioAux) {
+                nombre = producto.getNombre();
+                precioAux = producto.getPrecio();
             }
         }
         return nombre;
@@ -197,7 +195,7 @@ public class ControladorProducto implements ActionListener {
         double resultado = 0;
         List<Producto> listaProductos = (List<Producto>) repoProducto.findAll();
         for (Producto producto : listaProductos) {
-            suma += producto.getPrecioproductos();
+            suma += producto.getPrecio();
         }
         resultado = suma / listaProductos.size();
         return String.format("%.2f", resultado);
@@ -208,7 +206,7 @@ public class ControladorProducto implements ActionListener {
         double resultado = 0;
         List<Producto> listaProductos = (List<Producto>) repoProducto.findAll();
         for (Producto producto : listaProductos) {
-            suma = producto.getPrecioproductos() * producto.getCantidadproductos();
+            suma = producto.getPrecio() * producto.getInventario();
             resultado += suma;
         }
         return String.format("%.2f", resultado);
